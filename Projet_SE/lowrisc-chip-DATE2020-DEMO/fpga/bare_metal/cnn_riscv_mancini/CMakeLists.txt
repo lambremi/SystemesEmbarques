@@ -16,11 +16,15 @@ cmake_minimum_required(VERSION 3.0)
 # nom du projet
 project(CNN)
 
+# Spécifier le répertoire de sortie de l'exécutable (facultatif)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+message(STATUS "message : CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+
 # Configuration du répertoire source
 set(SOURCE_DIR ".")
 
 # Inclure les répertoires d'en-tête
-# include_directories("CNN")
+# target_include_directories(CNN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Récupérer la liste des fichiers source
 file(GLOB SOURCE_FILES "src/*.c")
@@ -29,10 +33,10 @@ file(GLOB SOURCE_FILES "src/*.c")
 file(GLOB HEADER_FILES "include/*.h")
 
 # Créer l'exécutable en utilisant les fichiers source
-add_executable(CNN.c ${SOURCE_FILES})
+add_executable(CNN ${SOURCE_FILES} ${HEADER_FILES})
 
 # Si vous avez des dépendances externes, vous pouvez les ajouter ici
 # target_link_libraries(MonProgramme LibrairieExterne)
 
-# Spécifier le répertoire de sortie de l'exécutable (facultatif)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
+
+

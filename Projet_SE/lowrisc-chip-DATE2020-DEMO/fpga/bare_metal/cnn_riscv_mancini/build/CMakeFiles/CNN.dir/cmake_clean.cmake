@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
+  "/home/guillaume/Documents/Phelma/S5/ProjetSysEmbarqué/SystemesEmbarques/Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/bin/CNN"
+  "/home/guillaume/Documents/Phelma/S5/ProjetSysEmbarqué/SystemesEmbarques/Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/bin/CNN.pdb"
   "CMakeFiles/CNN.dir/src/CNN.c.o"
   "CMakeFiles/CNN.dir/src/CNN.c.o.d"
-  "CNN"
-  "CNN.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

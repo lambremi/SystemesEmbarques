@@ -14,6 +14,9 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/*
 Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/*
 # sauf cnn_riscv_mancini
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/
+# Puis ignore tout dans ce dossier
+Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/bin/
+Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/build/
 
 # ignore tous les fichiers/répertoires commençant par .
 .*

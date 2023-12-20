@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named CNN.c
+# Target rules for targets named CNN
 
 # Build rule for target.
-CNN.c: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CNN.c
-.PHONY : CNN.c
+CNN: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CNN
+.PHONY : CNN
 
 # fast build rule for target.
-CNN.c/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.c.dir/build.make CMakeFiles/CNN.c.dir/build
-.PHONY : CNN.c/fast
+CNN/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.dir/build.make CMakeFiles/CNN.dir/build
+.PHONY : CNN/fast
 
 src/CNN.o: src/CNN.c.o
 .PHONY : src/CNN.o
 
 # target to build an object file
 src/CNN.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.c.dir/build.make CMakeFiles/CNN.c.dir/src/CNN.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.dir/build.make CMakeFiles/CNN.dir/src/CNN.c.o
 .PHONY : src/CNN.c.o
 
 src/CNN.i: src/CNN.c.i
@@ -142,7 +142,7 @@ src/CNN.i: src/CNN.c.i
 
 # target to preprocess a source file
 src/CNN.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.c.dir/build.make CMakeFiles/CNN.c.dir/src/CNN.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.dir/build.make CMakeFiles/CNN.dir/src/CNN.c.i
 .PHONY : src/CNN.c.i
 
 src/CNN.s: src/CNN.c.s
@@ -150,7 +150,7 @@ src/CNN.s: src/CNN.c.s
 
 # target to generate assembly for a file
 src/CNN.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.c.dir/build.make CMakeFiles/CNN.c.dir/src/CNN.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CNN.dir/build.make CMakeFiles/CNN.dir/src/CNN.c.s
 .PHONY : src/CNN.c.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... CNN.c"
+	@echo "... CNN"
 	@echo "... src/CNN.o"
 	@echo "... src/CNN.i"
 	@echo "... src/CNN.s"
