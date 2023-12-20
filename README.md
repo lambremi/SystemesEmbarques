@@ -3,7 +3,8 @@
 **Bonne chance**
 ## Liens utiles
 * [Chamilo de la matière](https://chamilo.grenoble-inp.fr/courses/PHELMA5PMESEN7/index.php?id_session=0)
-* [Sujet du projet]()
+* [Github du projet](https://github.com/lambremi/SystemesEmbarques)
+* [Notion du projet](https://www.notion.so/invite/142eefe4c4559cf11346c3c7b93ced8470ec7005)
 ## Git
 ### Faire des branches
 * Créer une branche

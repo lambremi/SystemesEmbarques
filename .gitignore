@@ -1,17 +1,3 @@
-# Ca teje le dossier build
-# build/
-
-# VSCode
-.vscode/
-
-# On indique à Git d'ignorer tous les fichier d'extension .bak
-*.bak
-
-# On indique à Git d'ignorer tous les fichier dont le nom se termine par ~ 
-*~
-
-# On indique à Git d'ignorer tous les fichier dont le nom commence par ~$
-~$*
-
-# Pour macos
-.DS_Store
+# On dit à Git d'ignorer tous les fichiers sauf les fichiers qui commencent par !
+*
+!README.md
