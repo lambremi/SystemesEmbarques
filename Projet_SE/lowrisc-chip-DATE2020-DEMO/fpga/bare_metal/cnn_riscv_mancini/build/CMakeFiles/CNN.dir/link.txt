@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/CNN.dir/src/CNN.c.o -o /home/guillaume/Documents/Phelma/S5/ProjetSysEmbarqué/SystemesEmbarques/Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/bin/CNN 
