@@ -4,7 +4,7 @@ programme C pour le CNN
 
 ## Structure du Projet
 ```
-MonProjet/
+cnn_riscv_mancini/
 ├── CMakeLists.txt
 ├── src/
 ├── include/
