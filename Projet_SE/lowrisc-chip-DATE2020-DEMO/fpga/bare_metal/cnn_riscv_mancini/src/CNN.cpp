@@ -3,10 +3,14 @@
 #include <iomanip>
 #include <stdio.h>
 #include <stdlib.h>
+#include "normalisation.h"
+#include "cnn_type.h"
+
+
 using namespace std ;
 
 
-void read_image_from_bin(const char *file_name, int index, double *image, int *indexFind) {
+void read_image_from_bin(const char *file_name, int index, image_type *image, int *indexFind) {
     // Ouvrir le fichier binaire en mode lecture
     FILE *file = fopen(file_name, "rb");
     if (file == NULL) {
@@ -42,7 +46,7 @@ void read_image_from_bin(const char *file_name, int index, double *image, int *i
         for (int i = 0; i < 32; i++) {
             for (int j = 0; j < 32; j++) {
                 if(i>=4 && i<28 && j>=4 && j<28){
-                    image[(i-4) * 24 * 3 + (j-4) * 3 + c] = (double)image_data[count];
+                    image[(i-4) * 24 * 3 + (j-4) * 3 + c] = (image_type)image_data[count];
                 }
                 count++;
             }
@@ -54,7 +58,7 @@ void read_image_from_bin(const char *file_name, int index, double *image, int *i
     free(image_data);
 }
 
-void print_matrice(double *image,int lenght){
+void print_matrice(image_type *image,int lenght){
      for (int i = 0; i < lenght; i++) {
         cout << image[i] << endl;
     }
@@ -63,13 +67,14 @@ void print_matrice(double *image,int lenght){
 
 int main() {
     // Affichage d'un message à la console
-    printf("Hello, world!\n");
 
-    double image[24*24*3];
+    float Matrice1[24*24*3];
+    float Matrice2[24*24*3];
     int index = 0;
 
-    read_image_from_bin("../../cnn_data/test_batch.bin",0,image,&index);
-    print_matrice(image,24*24*3);
+    read_image_from_bin("../../cnn_data/test_batch.bin",0,Matrice1,&index);
+    CNN_normalisation(Matrice1,Matrice2,24*24*3);
+    print_matrice(Matrice2,24*24*3);
 
     // Retourne 0 pour indiquer une exécution réussie
     return 0;
