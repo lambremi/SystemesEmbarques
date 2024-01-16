@@ -32,10 +32,19 @@ file(GLOB SOURCE_FILES
 file(GLOB HEADER_FILES "include/*.h")
 
 # Créer l'exécutable en utilisant les fichiers source
-add_executable(CNN ${SOURCE_FILES} ${HEADER_FILES})
+#add_executable(CNN ${SOURCE_FILES} ${HEADER_FILES})
+
+# Définition des exécutables de test
+file(GLOB TEST_SOURCES testCpp/*.cpp)
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    add_executable(${TEST_NAME} ${SOURCE_FILES} ${TEST_SOURCE})
+    target_include_directories(${TEST_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+endforeach(TEST_SOURCE)
 
 # Inclure les répertoires d'en-tête
-target_include_directories(CNN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+#target_include_directories(CNN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 
 # Si vous avez des dépendances externes, vous pouvez les ajouter ici
 # target_link_libraries(MonProgramme LibrairieExterne)
