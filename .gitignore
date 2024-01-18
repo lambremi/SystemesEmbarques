@@ -12,9 +12,13 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/*
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/
 # Puis ignore tout dans ce dossier
 Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/*
-# sauf cnn_riscv_mancini
+# sauf cnn_riscv_mancini et examples
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/
-
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/
+# Puis ignore tout dans ce dossier
+Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/*
+# sauf application.c (ajouter chemin d'accès ici si d'autres fichiers)
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/application.c
 # ignore tous les fichiers/répertoires commençant par .
 .*
 
