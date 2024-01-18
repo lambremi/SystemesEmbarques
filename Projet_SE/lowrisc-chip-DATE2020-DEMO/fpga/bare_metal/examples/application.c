@@ -722,7 +722,7 @@ void display(int img_in_number, filter_type filter_nb, uint8_t previous_imageSel
   {
 
   case BYPASS:
-    on_screen( ... );
+    on_screen( ... ); //TODOPONTAR
     break;
 
   case EDGE_DETECTOR:
@@ -764,7 +764,7 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     printf("\nPainting BYPASS overlay.\n");
     //L'image à l'indice 10 correspond à l'overlay du bypass
-    ptr_labels_overlay = ... ; // on decale pour sauter les etiquettes des classes du CNN
+    ptr_labels_overlay = ... ; // on decale pour sauter les etiquettes des classes du CNN - TODOPONTAR
     y_offset = 0;
     x_offset = 0;
   }
@@ -785,7 +785,7 @@ void on_screen(int mode, int class, uint8_t *img)
     x_offset = 0;
   }
 
-  for (y = 0; y < 480; ++y)						//Affichage de l'image
+  for (y = 0; y < 480; ++y)						//Affichage de l'image TODOPONTAR
   {
     for (x = 0; x < 640 / 8; ++x)
     {
@@ -890,7 +890,7 @@ int main(void)
 
   volatile unsigned int ii;
 
-  while (1)
+  while (1) // TODOPONTAR & OTHERS
   {
     if ( ... )    //Comparaison des valeurs courantes et précédentes des variables de sélection de l'image et du filtre
     {
