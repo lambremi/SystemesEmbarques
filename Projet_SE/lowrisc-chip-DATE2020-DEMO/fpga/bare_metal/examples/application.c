@@ -840,11 +840,9 @@ int main(void)
   printf("Number of images to read : %d,    MIN = %d    MAX = %d\n", NB_IMAGES_TO_BE_READ, MIN_IMAGES_TO_READ, MAX_IMAGES_TO_READ);
 
   // MIN and MAX are included
-  for ( ... )				// Lire chaque image et les stocker dans global_tab
+  for ( int i=0; i<MIN_IMAGES_TO_READ; i++ )				// Lire chaque image et les stocker dans global_tab
   {
-
-    ... ;
-
+    read_pic(i, tab_size, tab_width, tab_length, global_tab);
   }
 
 
@@ -900,7 +898,7 @@ int main(void)
         CNNDone = 0;
       }
 
-      display( ... );		//Si différence, maise à jour de l'affichage
+      display( ... );		//Si différence, mise à jour de l'affichage
 
       ... ;						//Mise à jour de des valeurs de previous_imageSel et previous_filterSel en fonction des valeurs courantes
       ... ;
