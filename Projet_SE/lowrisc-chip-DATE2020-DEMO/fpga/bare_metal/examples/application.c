@@ -707,13 +707,14 @@ float *normalizing_tensor(float *target_tensor, float *source_tensor, int size) 
 */
 void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, int source_sizeX, int source_sizeY)
 {
-  for (int i = 0; i < source_sizeX; i++)
+  int index = 0;
+  for (int c = 0; c < 3; c++)
   {
-    for (int j = 0; j < source_sizeY; j++)
+    for (int i = 0; i < source_sizeX; i++)
     {
-      for (int c = 0; c < 3; c++)
+      for (int j = 0; j < source_sizeY; j++)
       {
-        target_tensor[i * source_sizeX * 3 + j * 3 + c] = (float)source_img[i * source_sizeX * 3 + j * 3 + c];
+        target_tensor[index++] = (float)source_img[i * source_sizeX * 3 + j * 3 + c];
       }
     }
   }
