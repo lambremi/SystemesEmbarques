@@ -30,7 +30,7 @@ git push origin <nom de la branche>
 - source setenv.sh dans lowrisc.../
 
 ### Make
-- make dans fpga/bare-metal/examples/
+- make application dans fpga/bare-metal/examples/
 
 ## Contributeurs
 * [Arthur PONT](https://www.linkedin.com/in/arthur-pont-243227222/)
