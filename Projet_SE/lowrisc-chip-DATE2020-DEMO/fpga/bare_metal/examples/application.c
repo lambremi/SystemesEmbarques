@@ -16,10 +16,10 @@
 #include "lowrisc_memory_map.h"
 
 // For the CNN application ----
-#include "types.h"
-#include "top_cnn_mancini.h"
-#include "coeffs_cifar.h"
-#include "biases_cifar.h"
+// #include "types.h"
+// #include "top_cnn_mancini.h"
+// #include "coeffs_cifar.h"
+// #include "biases_cifar.h"
 
 // Including paramter (sizes, images to read, number of filters ...)
 #include "date2020_config.h"
@@ -497,8 +497,8 @@ typedef enum filter_type filter_type;
 #define EDGE_DETECTOR_NORMALIZE2 (float)0.0623
 #define EDGE_DETECTOR_THRESHOLD 15
 
-/* CONV BIAISES */
-#define BIAISES_CONV_FIXED_FORMAT float
+/* CONV biases */
+#define biases_CONV_FIXED_FORMAT float
 
 
 
@@ -514,10 +514,10 @@ static KERNEL_CONV_FIXED_FORMAT kernel[] = {-0.125, -0.125, -0.125,
                                             -0.125, 1, -0.125,
                                             -0.125, -0.125, -0.125};
 
-static BIAISES_CONV_FIXED_FORMAT biaises[] = {0};
+static biases_CONV_FIXED_FORMAT biases[] = {0};
 
 // filter_nb = soit 0 soit 1
-void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FORMAT kernel[3 * 3 * 1], BIAISES_CONV_FIXED_FORMAT biaises[1], uint8_t output[CONV_CONV_TOTAL_SIZE])
+void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FORMAT kernel[3 * 3 * 1], biases_CONV_FIXED_FORMAT biases[1], uint8_t output[CONV_CONV_TOTAL_SIZE])
 {
   for (int j = 0; j < CONV_CONV_SIZE_1; j++)
   {
@@ -570,7 +570,7 @@ void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FOR
         }
         else
         {
-          output[indexCalculationCONV(i, j, c, (CONV_CONV_SIZE_0), (CONV_CONV_SIZE_1), (CONV_CONV_SIZE_2))] = (uint8_t)(tmp + biaises[0]);
+          output[indexCalculationCONV(i, j, c, (CONV_CONV_SIZE_0), (CONV_CONV_SIZE_1), (CONV_CONV_SIZE_2))] = (uint8_t)(tmp + biases[0]);
         }
       }
     }
@@ -722,11 +722,11 @@ void display(int img_in_number, filter_type filter_nb, uint8_t previous_imageSel
   {
 
   case BYPASS:
-    on_screen( ... ); //TODOPONTAR
+    on_screen(filter_nb, 0, ptr_selected_img);
     break;
 
   case EDGE_DETECTOR:
-    on_screen( ... );
+    on_screen(filter_nb, 0, ptr_selected_img_filtered);
     break;
 
   case CNN_CLASSIFIER:
@@ -741,9 +741,9 @@ void display(int img_in_number, filter_type filter_nb, uint8_t previous_imageSel
       }
     }
     // Launch the CNN
-    int result = ... ;
+    int result = perform_cnn(img_in_number) ;
     // When finished, show the LABEL as an overlay.
-    on_screen( ... );
+    on_screen(filter_nb, result, ptr_selected_img);
     break;
   }
 }
