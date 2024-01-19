@@ -19,8 +19,14 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/*
 Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/*
 # sauf application.c (ajouter chemin d'accès ici si d'autres fichiers)
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/application.c
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/date2020_config.hc
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/Makefile
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/Makefile.bu
 # ignore tous les fichiers/répertoires commençant par .
 .*
 
 # ignore tous les contenant BCKP
 *BCKP*
+
+# Fichier / dossiers en .bak
+*.bak
