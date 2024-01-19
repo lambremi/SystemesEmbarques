@@ -8,6 +8,7 @@ cnn_riscv_mancini/
 ├── CMakeLists.txt
 ├── src/
 ├── include/
+├── testCpp/
 ├── build/
 └── bin/
 ```

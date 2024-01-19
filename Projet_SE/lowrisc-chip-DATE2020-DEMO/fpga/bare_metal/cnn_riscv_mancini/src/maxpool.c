@@ -2,8 +2,6 @@
 
 
 
-using namespace std;
-
 void maxpool(image_type* matrice_in, image_type* matrice_out,const int channel,const int sizeImageIn,const int sizeImageOut){
     CHANNELS:for (int c = 0; c < channel; c++){
         Y:for (int y = 0; y < sizeImageOut; y++){
