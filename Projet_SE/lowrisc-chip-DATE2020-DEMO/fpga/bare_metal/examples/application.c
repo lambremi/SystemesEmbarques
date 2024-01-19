@@ -308,7 +308,8 @@ void convert_to_greyscale(int n_image, int *tab_size, int *tab_width, int *tab_l
   //Transformation Greyscale
   for (int i = 0; i < tab_size[n_image - 1] * 3; i += 3)
   { //For each pixel on R, G et B                  //On remplit pixel par pixel le tableau image en utilisant 0.3 de la valeur de R, 0.57 de la valeur de G et et 0.11 de la valeur de B par pixels du tableau global_tab
-    ... }
+    image[i / 3] = (uint8_t)(0.3 * global_tab[i] + 0.57 * global_tab[i + 1] + 0.11 * global_tab[i + 2]);
+  } 
 }
 
 
@@ -608,7 +609,34 @@ void my_resizing(uint8_t *target_img, uint8_t *source_img, int source_size, int 
   double temp = 0.0;
   int w = 0;
 
-	...
+  for (int i = 0; i < target_sizeX; i++)
+  {
+    for (int j = 0; j < target_sizeY; j++)
+    {
+      for (int c = 0; c < 3; c++)
+      {
+        temp = 0.0;
+        for (int k = 0; k < 10; k++)
+        {
+          for (int l = 0; l < 10; l++)
+          {
+            temp += source_img[(i * 10 + k) * source_sizeX * 3 + (j * 10 + l) * 3 + c];
+          }
+        }
+        temp /= 100.0;
+        w = (int)temp;
+        if (w < 0)
+        {
+          w = 0;
+        }
+        else if (w > 255)
+        {
+          w = 255;
+        }
+        target_img[i * target_sizeX * 3 + j * 3 + c] = (uint8_t)w;
+      }
+    }
+  }
 }
 
 
@@ -618,8 +646,28 @@ void my_resizing(uint8_t *target_img, uint8_t *source_img, int source_size, int 
 //
 float *normalizing(float *normalized_img, float *resized_img, int size) // height * width * 3
 {
-  ...
+  // Calcul de la moyenne des pixels
+  float sum = 0;
+  for (int i = 0; i < size; i++) {
+    sum += resized_img[i];
+  }
+  float mu = sum / size;
+
+  // Calcul de la variance des pixels
+  float variance = 0;
+  for (int i = 0; i < size; i++) {
+    variance += (resized_img[i] - mu) * (resized_img[i] - mu);
+  }
+  variance = __ieee754_sqrtf(variance / size) - (1 / __ieee754_sqrtf(size));
+
+  // Normalisation des pixels
+  for (int i = 0; i < size; i++) {
+    normalized_img[i] = (resized_img[i] - mu) / variance;
+  }
+
+  return normalized_img;
 }
+
 
 
 
@@ -628,7 +676,26 @@ float *normalizing(float *normalized_img, float *resized_img, int size) // heigh
 //
 float *normalizing_tensor(float *target_tensor, float *source_tensor, int size) // height * width
 {
- ...
+  // Calcul de la moyenne des pixels
+  float sum = 0;
+  for (int i = 0; i < size; i++) {
+    sum += source_tensor[i];
+  }
+  float mu = sum / size;
+
+  // Calcul de la variance des pixels
+  float variance = 0;
+  for (int i = 0; i < size; i++) {
+    variance += (source_tensor[i] - mu) * (source_tensor[i] - mu);
+  }
+  variance = __ieee754_sqrtf(variance / size) - (1 / __ieee754_sqrtf(size));
+
+  // Normalisation des pixels
+  for (int i = 0; i < size; i++) {
+    target_tensor[i] = (source_tensor[i] - mu) / variance;
+  }
+
+  return target_tensor;
 }
 
 
@@ -640,7 +707,16 @@ float *normalizing_tensor(float *target_tensor, float *source_tensor, int size) 
 */
 void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, int source_sizeX, int source_sizeY)
 {
-  ...
+  for (int i = 0; i < source_sizeX; i++)
+  {
+    for (int j = 0; j < source_sizeY; j++)
+    {
+      for (int c = 0; c < 3; c++)
+      {
+        target_tensor[i * source_sizeX * 3 + j * 3 + c] = (float)source_img[i * source_sizeX * 3 + j * 3 + c];
+      }
+    }
+  }
 }
 
 
@@ -668,15 +744,15 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
 
   // Resize to a 24*24 RGB img.
   DEBUG_PRINTF("Starting resizing");
-  my_resizing( ... );
+  my_resizing(resized_img, source_img, source_size, source_sizeX, source_sizeY, target_size, target_sizeX, target_sizeY);
 
   // Convert to a tensor
   DEBUG_PRINTF("Starting img_to_tensor \n");
-  img_to_tensor(...);
+  img_to_tensor(resized_tensor, resized_img, source_size, source_sizeX, source_sizeY);
 
   // Normalization
   DEBUG_PRINTF("Starting normalization \n");
-  normalizing_tensor(...);
+  normalizing_tensor(normalized_tensor, resized_tensor, NN_IN_SIZE * 3);
 
   /*top_cnn_mancini(tab_coeffs, tab_biais, cifar_class, normalized_tensor, cifar_probabilities);*/
 

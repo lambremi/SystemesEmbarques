@@ -19,6 +19,7 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/*
 Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/*
 # sauf application.c (ajouter chemin d'accès ici si d'autres fichiers)
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/application.c
+!Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/date2020_config.h
 # ignore tous les fichiers/répertoires commençant par .
 .*
 
