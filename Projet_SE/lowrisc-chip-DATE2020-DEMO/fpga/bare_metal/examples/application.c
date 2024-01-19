@@ -220,7 +220,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
 
     //Generation du nom de fichier
     sprintf( file_name, "%d.ppm", n_image );
-    
+
 
     // Open a file
     printf("Loading %s\n", file_name );
@@ -232,7 +232,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
     }
 
     //Lecture de l'entete
-    UINT bytesRead; // Variable pour stocker le nombre d'octets lus
+    uint8_t bytesRead; // Variable pour stocker le nombre d'octets lus
     fr = f_read( &fil , &c1, 1, & bytesRead );
     fr = f_read( &fil , &c2, 1, &bytesRead );
 
@@ -243,7 +243,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
       plop = f_gets(text, 10000, &fil); //On lit la ligne de commentaire
 
       //plop = f_gets(text, 10000, ... );
-      
+
       if (text[0] == '#')
       { // test ligne de commentaire de openCV
         plop = f_gets(text, 10000, &fil);
@@ -253,14 +253,14 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
       strToken = strtok(NULL, "\n");
       width = atoi(strToken); //Lecture de la largeur de l'image
       size = length * width;
-      tab_width[n_image] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues 
+      tab_width[n_image] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues
       tab_length[n_image] = length;
       tab_size[n_image] = size;
       for (i = 0; i < size; i++)					//initialisation du tableau pixel
       {
         pixels[i] = 0;
       }
-      printf("File size: %d and image size : %d * %d = %d\n", 
+      printf("File size: %d and image size : %d * %d = %d\n",
              (unsigned long)f_size(&fil),
              tab_length[n_image],
              tab_width[n_image],
@@ -287,7 +287,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         }
       }
     }
-   
+
     printf("n_image = %d\n", n_image);
     for (i = 0; i < size * 3; i++)
     {
@@ -409,7 +409,7 @@ void enable_plic_interrupts()
 
 
 volatile int imageSel;
-volatile int filterSel; 
+volatile int filterSel;
 volatile int isBouncing;
 
 
@@ -418,10 +418,10 @@ void external_interrupt(void)
   int claim = 0;
 #ifdef VERBOSE
   //printf("Hello external interrupdet! "__TIMESTAMP__"\n");
-#endif  
-  
+#endif
+
   // Read the ID (the highest priority pending interrupt)
-  // If the value we read is zero then no pending interrupt is coming from PLIC 
+  // If the value we read is zero then no pending interrupt is coming from PLIC
   claim = plic[PLIC_HART0_CLAIM_COMPLETE_ADDR];
   clear_csr(mie, MIP_MEIP);
   if(isBouncing == 0)
@@ -453,12 +453,12 @@ void external_interrupt(void)
   	}
   	isBouncing = 1;
   }
-  
+
   // Write the ID of the interrupt source to the claim/complete register to complete the interrupt
-  // The PLIC will clear the pending bit of the corresponding ID 
+  // The PLIC will clear the pending bit of the corresponding ID
   // /!\ If the ID don't match the pending ID, the completion is silently ignored
   plic[PLIC_HART0_CLAIM_COMPLETE_ADDR] = claim;
-  set_csr(mie, MIP_MEIP); 
+  set_csr(mie, MIP_MEIP);
 }
 
 
@@ -752,7 +752,7 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
   uint8_t *source_img;
 
   // Load the 640*480 PPM image
-  read_pic(img_in_number, tab_size, tab_width, tab_length, global_tab);
+  read_pic(img_in_number, source_size, source_sizeY, source_sizeX, global_tab);
   source_img = global_tab + (img_in_number - 1) * DISPLAY_IMAGE_SIZE * 3;
 
   // Resize to a 24*24 RGB img.
@@ -878,7 +878,7 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     for (x = 0; x < 640 / 8; ++x)
     {
-      if ( ...
+      if ( ... )
       { //on verifie si on est dans la zone de l'etiquette
         hid_new_vga_ptr[x + y * 640 / 8] = (*ptr_labels_overlay);
         ptr_labels_overlay++;
