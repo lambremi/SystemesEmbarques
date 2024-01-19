@@ -124,7 +124,7 @@ size_t My_strspn(const char *s, const char *accept)
 /* Variable globale utilisee par My_strtok stockant les token suivants */
 char *___mystrtok;
 
-/* Fonction permettant de séparer une chaine de caractere en differents token stockes dans __strtok 
+/* Fonction permettant de séparer une chaine de caractere en differents token stockes dans __strtok
    Utilisation : Token = strtok(chaine de caractere, separateur)
                  Token suivant = strtok(NULL, separateur) */
 char *My_strtok(char *s, const char *ct)
@@ -170,8 +170,8 @@ const char Cifar10Base[10][11] = {  // Contains the name of each class
 
 extern volatile uint64_t *const hid_new_vga_ptr; // = (volatile uint64_t *)(new_vga_base_addr);
 
-uint8_t TAB_GS[NB_IMAGES_TO_BE_READ][DISPLAY_IMAGE_SIZE] = {0};          //Tableau de pixel de toutes les images rangeais les uns apres les autres
-uint8_t TAB_GS_FILTERED[NB_IMAGES_TO_BE_READ][DISPLAY_IMAGE_SIZE] = {0}; //Tableau de pixel de toutes les images rangeais les uns apres les autres
+uint8_t TAB_GS[NB_IMAGES_TO_BE_READ][DISPLAY_IMAGE_SIZE] = {0};          //Tableau de pixel de toutes les images rangées les uns apres les autres
+uint8_t TAB_GS_FILTERED[NB_IMAGES_TO_BE_READ][DISPLAY_IMAGE_SIZE] = {0}; //Tableau de pixel de toutes les images rangées les uns apres les autres
 
 // CNN Stuff --------------------------------------------------------------------
 // Tableau de pixel de toutes les images rangés les uns apres les autres
@@ -245,7 +245,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
       strToken = ...(NULL, "\n");
       width = ...(strToken); //Lecture de la largeur de l'image
       size = length * width;
-      tab_width[...] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues 
+      tab_width[...] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues
       tab_length[...] = length;
       tab_size[...] = size;
       for (i = 0; i < size; i++)					//initialisation du tableau pixel
@@ -278,7 +278,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         }
       }
     }
-   
+
     printf("n_image = %d\n", n_image);
     for (i = 0; i < size * 3; i++)
     {
@@ -397,7 +397,7 @@ void enable_plic_interrupts()
 
 
 volatile int imageSel;
-volatile int filterSel; 
+volatile int filterSel;
 volatile int isBouncing;
 
 
@@ -406,10 +406,10 @@ void external_interrupt(void)
   int claim = 0;
 #ifdef VERBOSE
   //printf("Hello external interrupdet! "__TIMESTAMP__"\n");
-#endif  
-  
+#endif
+
   // Read the ID (the highest priority pending interrupt)
-  // If the value we read is zero then no pending interrupt is coming from PLIC 
+  // If the value we read is zero then no pending interrupt is coming from PLIC
   claim = plic[ ... ]; 									//consulter le fichier syscall.c
   clear_csr(mie, MIP_MEIP);
   if(isBouncing == 0)
@@ -441,12 +441,12 @@ void external_interrupt(void)
   	}
   	isBouncing = 1;
   }
-  
+
   // Write the ID of the interrupt source to the claim/complete register to complete the interrupt
-  // The PLIC will clear the pending bit of the corresponding ID 
+  // The PLIC will clear the pending bit of the corresponding ID
   // /!\ If the ID don't match the pending ID, the completion is silently ignored
   plic[ ... ] = claim;
-  set_csr(mie, MIP_MEIP); 
+  set_csr(mie, MIP_MEIP);
 }
 
 
@@ -635,7 +635,7 @@ float *normalizing_tensor(float *target_tensor, float *source_tensor, int size) 
 
 
 /*
-  Converting an RGB image to a tensor, 
+  Converting an RGB image to a tensor,
     i.e. R0R1R2......G0G1G2........B0B1B2......
 */
 void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, int source_sizeX, int source_sizeY)
@@ -646,7 +646,7 @@ void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, i
 
 
 //Cette fonction a été retirée de votre template, mais vous pouvez vous en inspirer pour écrire la votre
-/*extern void top_cnn_mancini(coef_type tab_coeffs[NB_COEFFS], coef_type tab_biais[NB_BIAIS], led_type cifar_class[1], image_type image_in[CONV_SIZE_1 * CONV_SIZE_1 * 3], image_type cifar_probabilities[NCAN_OUT_5]);*/  
+/*extern void top_cnn_mancini(coef_type tab_coeffs[NB_COEFFS], coef_type tab_biais[NB_BIAIS], led_type cifar_class[1], image_type image_in[CONV_SIZE_1 * CONV_SIZE_1 * 3], image_type cifar_probabilities[NCAN_OUT_5]);*/
 
 
 int perform_cnn(int img_in_number)	//fonction top du CNN
@@ -662,7 +662,7 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
 
   // Allocate memory for intermediate images/tensors
   uint8_t *source_img;
-  
+
   // Load the 640*480 PPM image
   source_img = ... ;
 
@@ -842,12 +842,12 @@ int main(void)
   // MIN and MAX are included
   for ( ... )				// Lire chaque image et les stocker dans global_tab
   {
-    
+
     ... ;
 
   }
 
-  
+
   if (f_mount(NULL, "", 1))
   { // unmount it
     printf("fail to umount disk!");
@@ -857,16 +857,16 @@ int main(void)
   // All images loaded, grayscale conversion now.
 
   // Start the application: {filtering | no filtering} + on_screen
-  for ( ... )				//Pour chaque image de global_tab, appliquer le greyscale et stocker le résultat dans TAB_GS 
+  for ( int i=1; i < NB_IMAGES_TO_BE_READ+1; i++ )				//Pour chaque image de global_tab, appliquer le greyscale et stocker le résultat dans TAB_GS
   {
-    ... ;  
+    convert_to_greyscale(i, tab_size, tab_width, tab_length, global_tab, TAB_GS[i]);
   }
 
   // FILTERING STUFF
   printf("Starting filtering!\n");
-  for ( ... )                           //Pour chaque image de TAB_GS, appliquer la convolution et les stocker dans TAB_GS_FILTERED
+  for ( int i=0; i < NB_IMAGES_TO_BE_READ; i++ )                           //Pour chaque image de TAB_GS, appliquer la convolution et les stocker dans TAB_GS_FILTERED
   {
-    ... ;
+    convolution_filter(TAB_GS[i], kernel, biases, TAB_GS_FILTERED[i]);
   }
   printf("Filtering done !\n");
 
