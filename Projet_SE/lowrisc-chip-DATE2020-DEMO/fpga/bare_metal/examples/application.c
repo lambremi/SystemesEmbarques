@@ -190,6 +190,10 @@ float normalized_tensor[NN_IN_SIZE * 3] = {0};
 
 
 
+
+
+
+
 void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8_t *global_tab)
 {
 
@@ -215,62 +219,67 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
 
 
     //Generation du nom de fichier
-    sprintf( ..., "%d.ppm", ... );
+    sprintf( file_name, "%d.ppm", n_image );
+    
 
     // Open a file
-    printf("Loading %s\n", ... );
-    fr = f_open( ... , ... , FA_READ);
+    printf("Loading %s\n", file_name );
+    fr = f_open( &fil , file_name , FA_READ);
     if (fr)
     {
-      printf("Failed to open %s!\n", ... );
+      printf("Failed to open %s!\n", file_name );
       return 0;
     }
 
     //Lecture de l'entete
-    fr = f_read( ... , &c1, 1, ... );
-    fr = f_read( ... , &c2, 1, ... );
+    UINT bytesRead; // Variable pour stocker le nombre d'octets lus
+    fr = f_read( &fil , &c1, 1, & bytesRead );
+    fr = f_read( &fil , &c2, 1, &bytesRead );
 
     //Si l'entete vaut les caracteres 'P3' alors, on est dans le cas d'un fichier ppm
     if (c1 == 0x50 && c2 == 0x33)
     {
-      printf("Le fichier %s est un fichier ppm P3.\n", ... );
-      plop = f_gets(text, 10000, ... );
-      plop = f_gets(text, 10000, ... );
+      printf("Le fichier %s est un fichier ppm P3.\n", file_name );
+      plop = f_gets(text, 10000, &fil); //On lit la ligne de commentaire
+
+      //plop = f_gets(text, 10000, ... );
+      
       if (text[0] == '#')
       { // test ligne de commentaire de openCV
         plop = f_gets(text, 10000, &fil);
       }
-      strToken = ...(text, " ");					//Utilisation des fonctions sur les chaînes de caractères décrites plus haut
-      length = ...(strToken); //Lecture de la longueur de l'image
-      strToken = ...(NULL, "\n");
-      width = ...(strToken); //Lecture de la largeur de l'image
+      strToken = strtok(text, " ");					//Utilisation des fonctions sur les chaînes de caractères décrites plus haut
+      length = atoi(strToken); //Lecture de la longueur de l'image
+      strToken = strtok(NULL, "\n");
+      width = atoi(strToken); //Lecture de la largeur de l'image
       size = length * width;
-      tab_width[...] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues
-      tab_length[...] = length;
-      tab_size[...] = size;
+      tab_width[n_image] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues 
+      tab_length[n_image] = length;
+      tab_size[n_image] = size;
       for (i = 0; i < size; i++)					//initialisation du tableau pixel
       {
         pixels[i] = 0;
       }
-      printf("File size: %d and image size : %d * %d = %d\n", ... ,
-             tab_length[ ... ],
-             tab_width[ ... ],
-             tab_size[ ... ]);
+      printf("File size: %d and image size : %d * %d = %d\n", 
+             (unsigned long)f_size(&fil),
+             tab_length[n_image],
+             tab_width[n_image],
+             tab_size[n_image]);
 
-      plop = f_gets(text, 10000, ... );
+      plop = f_gets(text, 10000, &fil );
       i = 0;
       plop = calloc(3 * size, sizeof(*plop));
       //Pour toutes les lignes du fichier
       while (&fil != NULL && i < (3 * size))
       {
-        plop = f_gets(text, 10000, ... ); //On lit une ligne
-        strToken = ...(text, " ");  //On separe les differents chiffres
+        plop = f_gets(text, 10000, &fil ); //On lit une ligne
+        strToken = strtok(text, " ");  //On separe les differents chiffres
         //Pour tous les chiffres de la ligne
         while (strToken != NULL && i < (3 * size))
         {
-          pixels[i] = ...(strToken); //On remplit le tableau pixel par pixel
+          pixels[i] = (uint8_t)atoi(strToken); //On remplit le tableau pixel par pixel
           i++;
-          strToken = ...(NULL, " "); //On selectionne le token suivant
+          strToken = strtok(NULL, " "); //On selectionne le token suivant
           if (strToken[0] == '\n')
           { // On enlève les caractère de saut de ligne '\n'
             strToken = NULL;
@@ -278,24 +287,24 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         }
       }
     }
-
+   
     printf("n_image = %d\n", n_image);
     for (i = 0; i < size * 3; i++)
     {
-      global_tab[...] = pixels[i]; //On remplit le tableau global pour pouvoir reutiliser le tableau pixel
+      global_tab[n_image * size * 3 + i] = pixels[i]; //On remplit le tableau global pour pouvoir reutiliser le tableau pixel
     }
-    printf("Closing file %s\n", ...);
+    printf("Closing file %s\n", file_name);
 
     // Close the file
-    if (f_close(...))
+    if (f_close(&fil))
     {
       printf("fail to close file!");
       return 0;
     }
 
-  free(...);
-  free(...);
-  free(...);
+  free(text);
+  free(strToken);
+  free(plop);
 
 }
 
@@ -741,7 +750,8 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
   uint8_t *source_img;
 
   // Load the 640*480 PPM image
-  source_img = ... ;
+  read_pic(img_in_number, tab_size, tab_width, tab_length, global_tab);
+  source_img = global_tab + (img_in_number - 1) * DISPLAY_IMAGE_SIZE * 3;
 
   // Resize to a 24*24 RGB img.
   DEBUG_PRINTF("Starting resizing");
