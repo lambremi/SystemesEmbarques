@@ -47,6 +47,11 @@ FATFS FatFs; // Work area (file system object) for logical drive
 #define CONV_READ_INT_FORMAT float
 
 
+#define OVERLAY_X 176
+#define OVERLAY_Y 80
+#define OVERLAY_SIZE OVERLAY_X*OVERLAY_Y
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +127,7 @@ size_t My_strspn(const char *s, const char *accept)
 /* Variable globale utilisee par My_strtok stockant les token suivants */
 char *___mystrtok;
 
-/* Fonction permettant de séparer une chaine de caractere en differents token stockes dans __strtok 
+/* Fonction permettant de séparer une chaine de caractere en differents token stockes dans __strtok
    Utilisation : Token = strtok(chaine de caractere, separateur)
                  Token suivant = strtok(NULL, separateur) */
 char *My_strtok(char *s, const char *ct)
@@ -247,9 +252,9 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         plop = f_gets(text, 10000, &fil);
       }
       strToken = strtok(text, " ");					//Utilisation des fonctions sur les chaînes de caractères décrites plus haut
-      length = atoi(strToken); //Lecture de la longueur de l'image
+      length = My_atoi(strToken); //Lecture de la longueur de l'image
       strToken = strtok(NULL, "\n");
-      width = atoi(strToken); //Lecture de la largeur de l'image
+      width = My_atoi(strToken); //Lecture de la largeur de l'image
       size = length * width;
       tab_width[n_image] = width;						//Remplissage des tableaux des valeus de longueur, largeur et taille des images lues
       tab_length[n_image] = length;
@@ -275,7 +280,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         //Pour tous les chiffres de la ligne
         while (strToken != NULL && i < (3 * size))
         {
-          pixels[i] = (uint8_t)atoi(strToken); //On remplit le tableau pixel par pixel
+          pixels[i] = (uint8_t)My_atoi(strToken); //On remplit le tableau pixel par pixel
           i++;
           strToken = strtok(NULL, " "); //On selectionne le token suivant
           if (strToken[0] == '\n')
@@ -285,7 +290,7 @@ void read_pic(int n_image, int *tab_size, int *tab_width, int *tab_length, uint8
         }
       }
     }
-   
+
     printf("n_image = %d\n", n_image);
     for (i = 0; i < size * 3; i++)
     {
@@ -407,7 +412,7 @@ void enable_plic_interrupts()
 
 
 volatile int imageSel;
-volatile int filterSel; 
+volatile int filterSel;
 volatile int isBouncing;
 
 
@@ -416,8 +421,8 @@ void external_interrupt(void)
   int claim = 0;
 #ifdef VERBOSE
   //printf("Hello external interrupdet! "__TIMESTAMP__"\n");
-#endif  
-  
+#endif
+
   // Read the ID (the highest priority pending interrupt)
   // If the value we read is zero then no pending interrupt is coming from PLIC
   claim = plic[PLIC_HART0_CLAIM_COMPLETE_ADDR];
@@ -451,12 +456,12 @@ void external_interrupt(void)
   	}
   	isBouncing = 1;
   }
-  
+
   // Write the ID of the interrupt source to the claim/complete register to complete the interrupt
-  // The PLIC will clear the pending bit of the corresponding ID 
+  // The PLIC will clear the pending bit of the corresponding ID
   // /!\ If the ID don't match the pending ID, the completion is silently ignored
   plic[PLIC_HART0_CLAIM_COMPLETE_ADDR] = claim;
-  set_csr(mie, MIP_MEIP); 
+  set_csr(mie, MIP_MEIP);
 }
 
 
@@ -507,8 +512,8 @@ typedef enum filter_type filter_type;
 #define EDGE_DETECTOR_NORMALIZE2 (float)0.0623
 #define EDGE_DETECTOR_THRESHOLD 15
 
-/* CONV BIAISES */
-#define BIAISES_CONV_FIXED_FORMAT float
+/* CONV biases */
+#define biases_CONV_FIXED_FORMAT float
 
 
 
@@ -524,10 +529,10 @@ static KERNEL_CONV_FIXED_FORMAT kernel[] = {-0.125, -0.125, -0.125,
                                             -0.125, 1, -0.125,
                                             -0.125, -0.125, -0.125};
 
-static BIAISES_CONV_FIXED_FORMAT biaises[] = {0};
+static biases_CONV_FIXED_FORMAT biases[] = {0};
 
 // filter_nb = soit 0 soit 1
-void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FORMAT kernel[3 * 3 * 1], BIAISES_CONV_FIXED_FORMAT biaises[1], uint8_t output[CONV_CONV_TOTAL_SIZE])
+void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FORMAT kernel[3 * 3 * 1], biases_CONV_FIXED_FORMAT biases[1], uint8_t output[CONV_CONV_TOTAL_SIZE])
 {
   for (int j = 0; j < CONV_CONV_SIZE_1; j++)
   {
@@ -580,7 +585,7 @@ void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FOR
         }
         else
         {
-          output[indexCalculationCONV(i, j, c, (CONV_CONV_SIZE_0), (CONV_CONV_SIZE_1), (CONV_CONV_SIZE_2))] = (uint8_t)(tmp + biaises[0]);
+          output[indexCalculationCONV(i, j, c, (CONV_CONV_SIZE_0), (CONV_CONV_SIZE_1), (CONV_CONV_SIZE_2))] = (uint8_t)(tmp + biases[0]);
         }
       }
     }
@@ -596,7 +601,7 @@ void convolution_filter(uint8_t image[CONV_READ_SIZE_PGM], KERNEL_CONV_FIXED_FOR
 //square root function
 float __ieee754_sqrtf(float x)
 {
-  asm("... %0, %1"
+  asm("fsqrt.s %0, %1"
       : "=f"(x)
       : "f"(x));
   return x;
@@ -604,7 +609,7 @@ float __ieee754_sqrtf(float x)
 
 double __ieee754_sqrt(double x)
 {
-  asm("... %0, %1"
+  asm("fsqrt.d %0, %1"
       : "=f"(x)
       : "f"(x));
   return x;
@@ -711,7 +716,7 @@ float *normalizing_tensor(float *target_tensor, float *source_tensor, int size) 
 
 
 /*
-  Converting an RGB image to a tensor, 
+  Converting an RGB image to a tensor,
     i.e. R0R1R2......G0G1G2........B0B1B2......
 */
 void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, int source_sizeX, int source_sizeY)
@@ -732,7 +737,7 @@ void img_to_tensor(float *target_tensor, uint8_t *source_img, int source_size, i
 
 
 //Cette fonction a été retirée de votre template, mais vous pouvez vous en inspirer pour écrire la votre
-/*extern void top_cnn_mancini(coef_type tab_coeffs[NB_COEFFS], coef_type tab_biais[NB_BIAIS], led_type cifar_class[1], image_type image_in[CONV_SIZE_1 * CONV_SIZE_1 * 3], image_type cifar_probabilities[NCAN_OUT_5]);*/  
+/*extern void top_cnn_mancini(coef_type tab_coeffs[NB_COEFFS], coef_type tab_biais[NB_BIAIS], led_type cifar_class[1], image_type image_in[CONV_SIZE_1 * CONV_SIZE_1 * 3], image_type cifar_probabilities[NCAN_OUT_5]);*/
 
 
 int perform_cnn(int img_in_number)	//fonction top du CNN
@@ -748,7 +753,7 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
 
   // Allocate memory for intermediate images/tensors
   uint8_t *source_img;
-  
+
   // Load the 640*480 PPM image
   read_pic(img_in_number, source_size, source_sizeY, source_sizeX, global_tab);
   source_img = global_tab + (img_in_number - 1) * DISPLAY_IMAGE_SIZE * 3;
@@ -809,11 +814,11 @@ void display(int img_in_number, filter_type filter_nb, uint8_t previous_imageSel
   {
 
   case BYPASS:
-    on_screen( ... ); //TODOPONTAR
+    on_screen(filter_nb, 0, ptr_selected_img); //TODOPONTAR (int mode, int class, uint8_t *img)
     break;
 
   case EDGE_DETECTOR:
-    on_screen( ... );
+    on_screen(filter_nb, 0, ptr_selected_img_filtered);
     break;
 
   case CNN_CLASSIFIER:
@@ -823,14 +828,14 @@ void display(int img_in_number, filter_type filter_nb, uint8_t previous_imageSel
     {
       for (x = 0; x < 640 / 8; ++x)
       {
-        ... = ... ;
-	... ;
+        hid_new_vga_ptr[x + y * 640 / 8] = *display_ptr;
+	      display_ptr++;
       }
     }
     // Launch the CNN
-    int result = ... ;
+    int result = perform_cnn(img_in_number) ;
     // When finished, show the LABEL as an overlay.
-    on_screen( ... );
+    on_screen(filter_nb, result, ptr_selected_img);
     break;
   }
 }
@@ -851,7 +856,7 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     printf("\nPainting BYPASS overlay.\n");
     //L'image à l'indice 10 correspond à l'overlay du bypass
-    ptr_labels_overlay = ... ; // on decale pour sauter les etiquettes des classes du CNN - TODOPONTAR
+    ptr_labels_overlay = ptr_labels_overlay + 10*OVERLAY_SIZE ; // on decale pour sauter les etiquettes des classes du CNN - TODOPONTAR
     y_offset = 0;
     x_offset = 0;
   }
@@ -859,7 +864,7 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     printf("\nPainting CNN CLASS overlay\n");
     //L'image aux indices 0 à 9 correspondent aux overlays des différentes classes du CNN
-    ptr_labels_overlay = ... ;
+    ptr_labels_overlay = ptr_labels_overlay + class*OVERLAY_SIZE ;
     y_offset = 0;
     x_offset = 0;
   }
@@ -867,7 +872,7 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     printf("\nPainting the FILTER overlay\n");
     //L'image à l'indice 11 correspond à l'overlay du edge detector
-    ptr_labels_overlay = ... ; //apres les etiquettes des classes
+    ptr_labels_overlay = ptr_labels_overlay + 11*OVERLAY_SIZE ; //apres les etiquettes des classes
     y_offset = 0;
     x_offset = 0;
   }
@@ -876,13 +881,13 @@ void on_screen(int mode, int class, uint8_t *img)
   {
     for (x = 0; x < 640 / 8; ++x)
     {
-      if ( ... )
+      if ( x < OVERLAY_X && y < OVERLAY_Y )
       { //on verifie si on est dans la zone de l'etiquette
         hid_new_vga_ptr[x + y * 640 / 8] = (*ptr_labels_overlay);
         ptr_labels_overlay++;
       }
       else
-      {0.
+      {
         hid_new_vga_ptr[x + y * 640 / 8] = (*ptr_image);
       }
       ptr_image++;
@@ -932,7 +937,7 @@ int main(void)
     read_pic(i, tab_size, tab_width, tab_length, global_tab);
   }
 
-  
+
   if (f_mount(NULL, "", 1))
   { // unmount it
     printf("fail to umount disk!");
@@ -942,16 +947,16 @@ int main(void)
   // All images loaded, grayscale conversion now.
 
   // Start the application: {filtering | no filtering} + on_screen
-  for ( ... )				//Pour chaque image de global_tab, appliquer le greyscale et stocker le résultat dans TAB_GS 
+  for (int i=1; i<NB_IMAGES_TO_BE_READ+1; i++)				//Pour chaque image de global_tab, appliquer le greyscale et stocker le résultat dans TAB_GS
   {
-    ... ;  
+    convert_to_greyscale(i, tab_size, tab_width, tab_length, global_tab, TAB_GS[i-1]) ;
   }
 
   // FILTERING STUFF
   printf("Starting filtering!\n");
-  for ( ... )                           //Pour chaque image de TAB_GS, appliquer la convolution et les stocker dans TAB_GS_FILTERED
+  for ( int i=0; i<NB_IMAGES_TO_BE_READ; i++ )                           //Pour chaque image de TAB_GS, appliquer la convolution et les stocker dans TAB_GS_FILTERED
   {
-    ... ;
+    convolution_filter(TAB_GS[i], kernel, biases, TAB_GS_FILTERED[i]) ;
   }
   printf("Filtering done !\n");
 
@@ -977,18 +982,18 @@ int main(void)
 
   while (1) // TODOPONTAR & OTHERS
   {
-    if ( ... )    //Comparaison des valeurs courantes et précédentes des variables de sélection de l'image et du filtre
+    if ( previous_imageSel != imageSel )    //Comparaison des valeurs courantes et précédentes des variables de sélection de l'image et du filtre
     {
-      if ( ... )
+      if ( previous_filterSel != filterSel )
       {
         edgeDetectorDone = 0;
         CNNDone = 0;
       }
 
-      display( ... );		//Si différence, mise à jour de l'affichage
+      display(imageSel, filterSel, previous_imageSel, previous_filterSel);		//Si différence, mise à jour de l'affichage
 
-      ... ;						//Mise à jour de des valeurs de previous_imageSel et previous_filterSel en fonction des valeurs courantes
-      ... ;
+      previous_imageSel = imageSel;						//Mise à jour de des valeurs de previous_imageSel et previous_filterSel en fonction des valeurs courantes
+      previous_filterSel = filterSel;
     }
 
     ii = 10000;
