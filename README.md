@@ -19,6 +19,19 @@ git checkout <nom de la branche>
 ```
 git push origin <nom de la branche>
 ```
+
+### Ajouter des fichiers au git
+* Aller dans le gitignore et utiliser ! pour enlever un fichier du gitignore
+
+
+## Compilation
+### Source
+- source sourceme.sh dans TP3ANew
+- source setenv.sh dans lowrisc.../
+
+### Make
+- make application dans fpga/bare-metal/examples/
+
 ## Contributeurs
 * [Arthur PONT](https://www.linkedin.com/in/arthur-pont-243227222/)
 * [Louis LEMAIRE](https://www.linkedin.com/in/louis-lemaire-/)
