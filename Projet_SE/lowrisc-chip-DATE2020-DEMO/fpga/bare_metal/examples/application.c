@@ -16,10 +16,10 @@
 #include "lowrisc_memory_map.h"
 
 // For the CNN application ----
-// #include "types.h"
-// #include "top_cnn_mancini.h"
-// #include "coeffs_cifar.h"
-// #include "biases_cifar.h"
+#include "types.h"
+#include "top_cnn_mancini.h"
+#include "coeffs_cifar.h"
+#include "biases_cifar.h"
 
 // Including paramter (sizes, images to read, number of filters ...)
 #include "date2020_config.h"
@@ -318,7 +318,7 @@ void convert_to_greyscale(int n_image, int *tab_size, int *tab_width, int *tab_l
   for (int i = 0; i < tab_size[n_image - 1] * 3; i += 3)
   { //For each pixel on R, G et B                  //On remplit pixel par pixel le tableau image en utilisant 0.3 de la valeur de R, 0.57 de la valeur de G et et 0.11 de la valeur de B par pixels du tableau global_tab
     image[i / 3] = (uint8_t)(0.3 * global_tab[i] + 0.57 * global_tab[i + 1] + 0.11 * global_tab[i + 2]);
-  } 
+  }
 }
 
 
