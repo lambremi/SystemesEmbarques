@@ -18,8 +18,6 @@
 // For the CNN application ----
 #include "types.h"
 #include "top_cnn_mancini.h"
-#include "coeffs_cifar.h"
-#include "biases_cifar.h"
 
 // Including paramter (sizes, images to read, number of filters ...)
 #include "date2020_config.h"

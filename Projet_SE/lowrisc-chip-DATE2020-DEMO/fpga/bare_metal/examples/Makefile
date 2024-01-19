@@ -23,7 +23,7 @@ RISCV_GCC_OPTS = -static -std=gnu99 -g -ggdb -Os -Og -ffast-math -fno-common -fn
 # RISCV_GCC_OPTS = -march=rv64imafdc -mabi=lp64d -mcmodel=medany -ffreestanding -static -nostdlib -nostartfiles -std=gnu99 -g -ggdb -Os -Og \
 # 				 -I$(DRIVER_DIR) -I$(BASE_DIR)
 RISCV_DUMP_OPTS = -D -S -l
-RISCV_LINK = $(RISCV_PREFIX)gcc -T $(DRIVER_DIR)/test.ld
+RISCV_LINK = $(RISCV_PREFIX)gcc -T $(DRIVER_DIR)/test.ld 
 RISCV_LINK_OPTS = -nostdlib -nostartfiles -Xlinker -M=mapfile
 
 JPG_LIB_DIR = $(DRIVER_DIR)/jpeg-6b
@@ -108,33 +108,30 @@ drivers/mmc/mmc.c lib/string.c  lib/display_options.c ../driver/mini-printf.c ..
 
 boot: $U
 	riscv64-unknown-elf-gcc -c -o crt.o ../driver/crt.S
-	riscv64-unknown-elf-gcc -c -g -Iinclude -I./arch/riscv/include -I../driver -include ./include/linux/kconfig.h -D__KERNEL__ -D__UBOOT__ -Wall -Wstrict-prototypes -Wno-format-security -fno-builtin -ffreestanding -fshort-wchar -Os -fno-stack-protector -fno-delete-null-pointer-checks -g -fstack-usage -Wno-format-nonliteral -ffixed-gp -fpic -fno-strict-aliasing -fno-common -gdwarf-2 -I. -fno-builtin-printf -fno-builtin-memcpy $U
+	riscv64-unknown-elf-gcc -c -g -Iinclude -I./arch/riscv/include -I../driver -include ./include/linux/kconfig.h -D__KERNEL__ -D__UBOOT__ -Wall -Wstrict-prototypes -Wno-format-security -fno-builtin -ffreestanding -fshort-wchar -Os -fno-stack-protector -fno-delete-null-pointer-checks -g -fstack-usage -Wno-format-nonliteral -ffixed-gp -fpic -fno-strict-aliasing -fno-common -gdwarf-2 -I. -fno-builtin-printf -fno-builtin-memcpy $U 
 	riscv64-unknown-elf-gcc -o $@ -g -nostdlib -nostartfiles boot.o $(MMC) -T ../driver/test.ld
 
 MY_APPLICATION_C_FILES = lib/strto.c  lib/time.c  lib/div64.c  lib/ctype.c   drivers/block/blk_legacy.c  drivers/mmc/lowrisc_mmc.c  drivers/mmc/mmc_legacy.c \
 drivers/mmc/mmc.c lib/string.c  lib/display_options.c ../driver/mini-printf.c ../driver/hid.c ../driver/logo.c ../driver/syscalls.c application.c ../driver/ff.c \
-../driver/memory.c ../driver/sdhci-minion-hash-md5.c ../driver/elf.c ../driver/ethlib.c ../driver/dhcp-client.c ../driver/random.c
+../driver/memory.c ../driver/sdhci-minion-hash-md5.c ../driver/elf.c ../driver/ethlib.c ../driver/dhcp-client.c ../driver/random.c 
 
-# CNN_RISCV_MANCINI = 		../cnn_riscv_mancini/src/top_cnn_mancini.c \
-# 							../cnn_riscv_mancini/src/flush_mem.c \
-# 							../cnn_riscv_mancini/src/convolution.c \
-# 							../cnn_riscv_mancini/src/maxpool.c \
-# 							../cnn_riscv_mancini/src/reshape.c \
-# 							../cnn_riscv_mancini/src/perceptron.c \
-# 							../cnn_riscv_mancini/src/argmax.c \
-# 							../cnn_riscv_mancini/src/overlays.c
-#
+CNN_RISCV_MANCINI = 		../cnn_riscv_mancini/src/top_cnn_mancini.c \
+							../cnn_riscv_mancini/src/convolution.c \
+							../cnn_riscv_mancini/src/maxpool.c \
+							../cnn_riscv_mancini/src/reshape.c \
+							../cnn_riscv_mancini/src/perceptron.c \
+							../cnn_riscv_mancini/src/maxIndice.c \
+							../cnn_riscv_mancini/src/overlays.c
+
 CNN_RISCV_MANCINI_INCLUDE = ../cnn_riscv_mancini/include
 
 APPLICATION_O_FILES = crt.o blk_legacy.o ctype.o display_options.o div64.o elf.o ff.o hid.o logo.o lowrisc_mmc.o memory.o mini-printf.o \
       mmc_legacy.o mmc.o sdhci-minion-hash-md5.o string.o strto.o syscalls.o time.o ethlib.o dhcp-client.o random.o \
-	  top_cnn_mancini.o \
-	  flush_mem.o \
 	  convolution.o \
 	  maxpool.o \
 	  reshape.o \
 	  perceptron.o \
-	  argmax.o \
+	  maxIndice.o \
 	  overlays.o
 
 application: $(MY_APPLICATION_C_FILES)
