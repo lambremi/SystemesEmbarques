@@ -27,3 +27,6 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/*
 
 # ignore tous les contenant BCKP
 *BCKP*
+
+# Fichier / dossiers en .bak
+*.bak
