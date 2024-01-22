@@ -43,6 +43,23 @@ git push origin <nom de la branche>
 - renommer les images ppm en 1.ppm, 2.ppm etc.
 - utiliser le protocole picocom (protocole detaille page 20 du pdf "technical_documentation")
 
+### Installation sur carte
+- Mettre le `boot.bin` dans la carte SD
+- Mettre les images sous la forme de `1.ppm`, `2.ppm`, etc. dans la carte SD
+- Le système peut mettre du temps à démarrer
+- En cas de blocage appuyer sur le bouton **prog**, éventuellement plusieurs fois
+- Mettre le **switch 1 à 1**
+- Pour communiquer avec la carte, utiliser **picocom**
+- **Faire chier pontar --> baiser la carte**
+
+## Rapport
+- Gros bonus pour ceux qui font un truc clean avec des exemples sur lesquels on a un exemple pour valier chaque taches
+- Faire un gros readme
+- Partie CC (note)
+    - Petit exam
+    - Rendu des TP
+    - Rendu du projet
+
 ## Contributeurs
 * [Arthur PONT](https://www.linkedin.com/in/arthur-pont-243227222/)
 * [Louis LEMAIRE](https://www.linkedin.com/in/louis-lemaire-/)
