@@ -770,7 +770,7 @@ int perform_cnn(int img_in_number)	//fonction top du CNN
   DEBUG_PRINTF("Starting normalization \n");
   normalizing_tensor(normalized_tensor, resized_tensor, NN_IN_SIZE * 3);
 
-  /*top_cnn_mancini(tab_coeffs, tab_biais, cifar_class, normalized_tensor, cifar_probabilities);*/
+  top_cnn_mancini(cifar_class, normalized_tensor, cifar_probabilities);
 
   printf("\nairplane :    %d \n", (int)cifar_probabilities[0]);
   printf("automobile :  %d \n", (int)cifar_probabilities[1]);

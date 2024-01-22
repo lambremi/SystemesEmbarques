@@ -127,6 +127,7 @@ CNN_RISCV_MANCINI_INCLUDE = ../cnn_riscv_mancini/include
 
 APPLICATION_O_FILES = crt.o blk_legacy.o ctype.o display_options.o div64.o elf.o ff.o hid.o logo.o lowrisc_mmc.o memory.o mini-printf.o \
       mmc_legacy.o mmc.o sdhci-minion-hash-md5.o string.o strto.o syscalls.o time.o ethlib.o dhcp-client.o random.o \
+	  top_cnn_mancini.o \
 	  convolution.o \
 	  maxpool.o \
 	  reshape.o \
