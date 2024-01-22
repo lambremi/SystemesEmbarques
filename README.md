@@ -1,10 +1,16 @@
 # Systèmes Embarqués
 ## Description
 **Bonne chance**
+## Matériel et sessions utilisées 
+* Sessions du CIME 
+xph3sei206, xph3sei210 et xph3sei209
+* Matériel FPGA et SD
+Nous avons utilisés le matérien n° 6 et 7
 ## Liens utiles
 * [Chamilo de la matière](https://chamilo.grenoble-inp.fr/courses/PHELMA5PMESEN7/index.php?id_session=0)
 * [Github du projet](https://github.com/lambremi/SystemesEmbarques)
 * [Notion du projet](https://www.notion.so/invite/142eefe4c4559cf11346c3c7b93ced8470ec7005)
+* [Google Docs du projet](https://docs.google.com/document/d/1CKzjBNG5KMEnRkBht0hFXc6-6X_QD-N0SXa2cnMQL8Q/edit?usp=sharing)
 ## Git
 ### Faire des branches
 * Créer une branche
@@ -31,6 +37,11 @@ git push origin <nom de la branche>
 
 ### Make
 - make application dans fpga/bare-metal/examples/
+
+### Portage sur le FPGA 
+- renommer l'executable "application" en boot.bin
+- renommer les images ppm en 1.ppm, 2.ppm etc.
+- utiliser le protocole picocom (protocole detaille page 20 du pdf "technical_documentation")
 
 ## Contributeurs
 * [Arthur PONT](https://www.linkedin.com/in/arthur-pont-243227222/)
