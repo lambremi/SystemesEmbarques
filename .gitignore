@@ -17,6 +17,8 @@ Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/*
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/
 # Puis ignore tout dans ce dossier
 Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/*
+Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/build/*
+Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/cnn_riscv_mancini/bin/*
 # sauf application.c (ajouter chemin d'accès ici si d'autres fichiers)
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/application.c
 !Projet_SE/lowrisc-chip-DATE2020-DEMO/fpga/bare_metal/examples/date2020_config.hc
